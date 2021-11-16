@@ -16,7 +16,6 @@ void	sendsig(char *str, int pid)
 			else
 				kill(pid, SIGUSR2);
 			usleep(300);
-			// printf("%d", (str[j] >> i) & 1);
 			i--;
 		}
 		j++;

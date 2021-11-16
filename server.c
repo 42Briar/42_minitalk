@@ -2,7 +2,7 @@
 
 char	*g_out;
 
-void	checknull(void)
+void	checknull(siginfo_t *info)
 {
 	int	i;
 	int	j;
@@ -16,6 +16,7 @@ void	checknull(void)
 		i--;
 		j--;
 	}
+	ft_putnbr_fd(info->si_pid, 1);
 }
 
 void	printchar(void)
@@ -26,7 +27,7 @@ void	printchar(void)
 	int	pow;
 
 	bin = ft_atoi(g_out);
-	ft_bzero(g_out, 8);
+	ft_bzero(g_out, 9);
 	pow = 1;
 	out = 0;
 	while (bin > 0)
@@ -36,10 +37,11 @@ void	printchar(void)
 		bin /= 10;
 		pow *= 2;
 	}
+	bin = 0;
 	ft_putchar_fd(out, 1);
 }
 
-void	my_handler(int signum)
+void	handle(int signum, siginfo_t *info, void *context)
 {
 	char	in[2];
 
@@ -50,17 +52,21 @@ void	my_handler(int signum)
 	in[1] = 0;
 	g_out = ft_strjoin(g_out, in);
 	if (ft_strlen(g_out) == 8 && in[0] == '0')
-		checknull();
+		checknull(info);
 	if (ft_strlen(g_out) == 8)
 		printchar();
 }
 
 int	main(void)
 {
+	struct sigaction	sa;
+
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar_fd('\n', 1);
-	signal(SIGUSR1, my_handler);
-	signal(SIGUSR2, my_handler);
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handle;
+	signal(SIGUSR1, handle);
+	signal(SIGUSR2, handle);
 	while (true)
 		pause();
 }
