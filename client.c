@@ -15,22 +15,36 @@ void	sendsig(char *str, int pid)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
-			usleep(300);
+			usleep(200);
 			i--;
 		}
 		j++;
 	}
-	i = -1;
-	while (++i < 8)
-		kill(pid, SIGUSR2);
+}
+
+void	complete(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("\x1b[32mMessage Sent!\033[0m\n", 1);
+	exit(0);
 }
 
 int	main(int argc, char *argv[])
 {
-	int	pid;
+	int		pid;
+	int		i;
 
 	if (argc > 3 | argc < 3)
 		exit(0);
 	pid = ft_atoi(argv[1]);
+	signal(SIGUSR1, complete);
 	sendsig(argv[2], pid);
+	i = 0;
+	while (i++ < 8)
+	{
+		kill(pid, SIGUSR2);
+		usleep(200);
+	}	
+	while (true)
+		pause();
 }

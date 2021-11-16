@@ -11,6 +11,8 @@ INC		=	-I. -I$(LIBFT_DIR)
 CC		=	gcc
 CFLAG	=	-Wall -Wextra -Werror
 RM		=	rm -f
+GREEN 	= \x1b[32m
+RESET 	= \033[0m
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
@@ -24,7 +26,6 @@ $(SERVER): $(OBJ2) $(LIBFT)
 
 $(CLIENT): $(OBJ1) $(LIBFT)
 	$(CC) $(CFLAG) $(OBJ1) $(LIBFT) $(INC) -o $(CLIENT)
-
 
 $(LIBFT):
 	@$(MAKE) -C ./libft
