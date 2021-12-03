@@ -15,17 +15,17 @@ GREEN 	= \x1b[32m
 RESET 	= \033[0m
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 all: $(SERVER) $(CLIENT)
 
 $(NAME): all
 
 $(SERVER): $(OBJ2) $(LIBFT)
-	$(CC) $(CFLAG) $(OBJ2) $(LIBFT) $(INC) -o $(SERVER)
+	@$(CC) $(CFLAG) $(OBJ2) $(LIBFT) $(INC) -o $(SERVER)
 
 $(CLIENT): $(OBJ1) $(LIBFT)
-	$(CC) $(CFLAG) $(OBJ1) $(LIBFT) $(INC) -o $(CLIENT)
+	@$(CC) $(CFLAG) $(OBJ1) $(LIBFT) $(INC) -o $(CLIENT)
 
 $(LIBFT):
 	@$(MAKE) -C ./libft
